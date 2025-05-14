@@ -1,0 +1,39 @@
+# macOS system files
+.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+
+# Node dependencies (if Jekyll/npm is used for site styling)
+node_modules/
+
+# Jekyll cache
+_site/
+.jekyll-cache/
+
+# Temporary and log files
+*.log
+*.tmp
+
+# Go binaries (not needed here, but useful if shared build tools are included)
+*.exe
+*.dll
+*.so
+*.dylib
+*.out
+
+# Zip archives are allowed for release assets, block others
+!*.zip
+
+# Ignore any untracked build output folder
+dist/
+build/
+output/
+
+# Ignore release.yaml artifacts (optional, if downloaded)
+*.tar.gz
+*.tgz
+*.deb
+*.rpm
