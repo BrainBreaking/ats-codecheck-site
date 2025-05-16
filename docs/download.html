@@ -30,8 +30,9 @@
             // Redirect with token to Cloud Run secured endpoint
             const version = "v1.0.0";
             const platform = "macos";
-            const url = `https://securedownload-<region-id>.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
-            window.location.href = url;
+            console.log("Version param:", version);
+            const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
+            window.location.href = downloadUrl;
         } catch (error) {
             console.error("Authentication failed:", error);
         }
