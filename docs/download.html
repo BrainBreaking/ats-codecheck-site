@@ -36,7 +36,7 @@
 
             // Use query params if present
             const version = getQueryParam("version") || "latest";
-            const platform = getQueryParam("platform") || "macos";
+            const platform = getQueryParam("platform") || "macOs";
 
             const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
             window.location.href = downloadUrl;
