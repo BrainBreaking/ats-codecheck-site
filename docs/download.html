@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ATS CodeCheck Protected Downloads</title>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+</head>
+<body>
+<h2>🔐 ATS CodeCheck Protected Download</h2>
+<button id="loginBtn">🔓 Sign in with Google</button>
+<div id="status"></div>
+<div id="downloadLinks" style="display:none;">
+    <p>✅ You are authenticated. Choose a file to download:</p>
+    <ul>
+        <li><a href="#" onclick="download('macos')">macOS</a></li>
+        <li><a href="#" onclick="download('linux')">Linux</a></li>
+        <li><a href="#" onclick="download('windows')">Windows</a></li>
+    </ul>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDfKWha2EwdtpgUPnjxjM9SCJ1J5nNEmUM",
+        authDomain: "ats-nonprod.firebaseapp.com",
+        projectId: "ats-nonprod",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            document.getElementById('status').textContent = `👤 Logged in as: ${user.email}`;
+            document.getElementById('downloadLinks').style.display = 'block';
+        } catch (error) {
+            document.getElementById('status').textContent = `❌ Login failed: ${error.message}`;
+        }
+    });
+
+    async function download(platform) {
+        const user = auth.currentUser;
+        if (!user) return alert("You must be logged in");
+
+        const token = await user.getIdToken();
+        const version = "v1.0.0";
+        const url = `https://securedownload-czucgf4kiq-uc.a.run.app?version=${version}&platform=${platform}`;
+
+        const response = await fetch(url, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (!response.ok) return alert("❌ Download failed: " + response.status);
+
+        const blob = await response.blob();
+        const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || `${platform}.zip`;
+
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+    }
+</script>
+</body>
+</html>

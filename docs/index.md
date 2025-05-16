@@ -21,13 +21,9 @@ title: ATS CodeCheck Library
 
 [![Release](https://img.shields.io/github/v/release/BrainBreaking/ats-codecheck-lib?label=Latest%20Release)](https://github.com/BrainBreaking/ats-codecheck-lib/releases/latest)
 
-## 🔗 Download Latest Release Artifacts
 
-You can download platform-specific builds from Google Cloud Storage:
 
-- **macOS**: [Download dylib](https://storage.googleapis.com/atscodecheck-releases/latest/atscodecheck-macos-v1.0.0.zip)
-- **Linux**: [Download .so](https://storage.googleapis.com/atscodecheck-releases/latest/atscodecheck-linux-v1.0.0.zip)
-- **Windows**: [Download DLL](https://storage.googleapis.com/atscodecheck-releases/latest/atscodecheck-windows-v1.0.0.zip)
+🔐 [Access Protected Downloads](download.html)
 
 Choose your platform and download the ZIP file containing:
 - The shared library (`.dll`, `.so`, or `.dylib`)
