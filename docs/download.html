@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <title>Secure Download - ATS CodeCheck</title>
@@ -8,18 +8,25 @@
 </head>
 <body>
 <h2>🔐 Secure Download</h2>
+<p>Please sign in with your authorized Google account to access the download.</p>
 <button id="loginBtn">Login with Google</button>
 
 <script>
-    // Initialize Firebase
+    // Firebase config
     const firebaseConfig = {
         apiKey: "AIzaSyDfKWha2EwdtpgUPnjxjM9SCJ1J5nNEmUM",
         authDomain: "ats-nonprod.firebaseapp.com",
-        projectId: "ats-nonprod",
-        appId: "ats-nonprod"
+        projectId: "ats-nonprod"
     };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+
+    // Dynamic query parsing
+    function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
 
     document.getElementById("loginBtn").addEventListener("click", async () => {
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -27,14 +34,15 @@
             const result = await auth.signInWithPopup(provider);
             const token = await result.user.getIdToken();
 
-            // Redirect with token to Cloud Run secured endpoint
-            const version = "v1.0.0";
-            const platform = "macos";
-            console.log("Version param:", version);
+            // Use query params if present
+            const version = getQueryParam("version") || "v1.0.0";
+            const platform = getQueryParam("platform") || "macos";
+
             const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
             window.location.href = downloadUrl;
         } catch (error) {
             console.error("Authentication failed:", error);
+            alert("Authentication failed: " + error.message);
         }
     });
 </script>
