@@ -40,9 +40,9 @@ const SecureDownloadLogin: React.FC = () => {
               value={platform}
               onChange={(e) => setPlatform(e.target.value)}
           >
-            <option value="macos">macOS</option>
-            <option value="windows">Windows</option>
-            <option value="linux">Linux</option>
+            <option value="macOs">macOS</option>
+            <option value="Windows">Windows</option>
+            <option value="Linux">Linux</option>
           </select>
         </label>
         <br /><br />
