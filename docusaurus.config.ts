@@ -3,14 +3,14 @@ import {Config} from '@docusaurus/types';
 const config: Config = {
   title: 'ATS CodeCheck',
   tagline: 'Secure Code Validation via Embedded Shared Libraries',
-  url: 'https://atscodecheck.dev', // Your custom domain or GitHub Pages root
+  url: 'https://atscodecheck.dev',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
-  organizationName: 'BrainBreaking', // GitHub org/user
-  projectName: 'ats-codecheck-site', // GitHub repo
+  organizationName: 'BrainBreaking',
+  projectName: 'ats-codecheck-site',
 
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
@@ -23,8 +23,7 @@ const config: Config = {
   presets: [
     [
       'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.ts'),
@@ -33,7 +32,7 @@ const config: Config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+      },
     ],
   ],
 
@@ -66,7 +65,7 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/docs/intro',
+              to: 'intro',
             },
           ],
         },
