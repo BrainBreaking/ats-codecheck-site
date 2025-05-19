@@ -1,40 +1,15 @@
 ---
-layout: default
-title: ATS CodeCheck Library
+title: Integration Example
+sidebar_position: 2
 ---
 
-# 🧠 ATS CodeCheck Library
+# 🛠️ Integration Example
 
-**ATS CodeCheck** is a cross-platform native library designed to validate Colombian identity card barcodes. It provides a simple API that can be used from C/C++ and other languages that support native FFI (foreign function interface).
+This example demonstrates how to integrate the ATS CodeCheck library into a C application to validate Colombian identity card barcodes.
 
-- 🔄 Supports **Linux**, **macOS**, and **Windows**
-- 🔒 Secure validation of digital signatures
-- ⚡️ Lightweight & embeddable in native apps or middleware
-- 📦 Available as `.dll`, `.so`, `.dylib` + C header
-- 📦 Developer Licences Available upon request support@atscodecheck.dev
-
----
-
-## 🚀 Getting Started
-
-### 1. Download the Latest Release
-
-[![Release](https://img.shields.io/github/v/release/BrainBreaking/ats-codecheck-lib?label=Latest%20Release)](https://github.com/BrainBreaking/ats-codecheck-lib/releases/latest)
-
-
-
-🔐 [Access Protected Downloads](download.html)
-
-Choose your platform and download the ZIP file containing:
-- The shared library (`.dll`, `.so`, or `.dylib`)
-- The header file `libatscodecheck.h`
-
----
-
-### 2. Initialize the Library
+## 1. Initialize the Library
 
 ```c
-// C example
 #include "libatscodecheck.h"
 
 int result = ATS_Init();
@@ -43,9 +18,7 @@ if (result != 0) {
 }
 ```
 
----
-
-### 3. Validate a Barcode
+## 2. Validate a Barcode
 
 ```c
 const char* jsonRequest = "{ \"base64Barcode\": \"...\", \"requestFields\": [\"CEDNUM\", \"NUMPREP\"] }";
@@ -58,9 +31,10 @@ if (code == 0) {
 } else {
     printf("❌ ATS_CheckCode failed with code: %d\n", code);
 }
+
 ```
 
-🧪 basic working example.
+## 3. Full Example
 
 ```c
 #include <stdio.h>
@@ -110,35 +84,3 @@ int main() {
 }
 
 ```
-
-
----
-
-## 📄 Response Format
-
-The response is a JSON object like:
-
-```json
-{
-  "txid": "uuid-1234",
-  "message": "Valid Signature",
-  "version": "PMT102_531",
-  "id": "02",
-  "fields": {
-    "CEDNUM": "0012345678",
-    "NUMPREP": "1234567"
-  },
-  "valid": true
-}
-```
-
----
-
-## 📬 Contact
-
-For commercial or enterprise integration support, email:  
-**support@atscodecheck.dev**
-
----
-
-© 2025 [BrainBreaking](https://github.com/BrainBreaking). All rights reserved.
