@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
+// 🔐 Initialize Firebase once
 const firebaseConfig = {
   apiKey: "AIzaSyDfKWha2EwdtpgUPnjxjM9SCJ1J5nNEmUM",
   authDomain: "ats-nonprod.firebaseapp.com",
@@ -9,46 +10,45 @@ const firebaseConfig = {
   appId: "ats-nonprod",
 };
 
-initializeApp(firebaseConfig);
-const auth = getAuth();
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-export default function SecureDownloadLogin() {
-  const [downloadLink, setDownloadLink] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const SecureDownloadLogin: React.FC = () => {
+  const [platform, setPlatform] = useState('macos');
 
   const handleLogin = async () => {
-    const provider = new GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
     try {
-      setLoading(true);
-      const result = await signInWithPopup(auth, provider);
-      const token = await result.user.getIdToken();
+      const result = await firebase.auth().signInWithPopup(provider);
+      const token = await result.user?.getIdToken();
 
       const version = 'v1.0.0';
-      const platform = 'macos'; // Could be dynamic
-      const url = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
-      setDownloadLink(url);
-    } catch (err: any) {
-      setError('Authentication failed.');
-      console.error(err);
-    } finally {
-      setLoading(false);
+      const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
+      window.location.href = downloadUrl;
+    } catch (error) {
+      console.error('Authentication failed:', error);
     }
   };
 
   return (
-    <div style={{ border: '1px solid #eee', padding: '1rem', borderRadius: '8px' }}>
-      <h3>🔐 Secure Download</h3>
-      <p>Login with Google to unlock protected downloads.</p>
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? 'Authenticating...' : 'Login with Google'}
-      </button>
-      {downloadLink && (
-        <p style={{ marginTop: '1rem' }}>
-          ✅ Authenticated. <a href={downloadLink}>Click here to download</a>
-        </p>
-      )}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+      <div>
+        <h2>🔐 Secure Download</h2>
+        <label>
+          Choose platform:&nbsp;
+          <select
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value)}
+          >
+            <option value="macos">macOS</option>
+            <option value="windows">Windows</option>
+            <option value="linux">Linux</option>
+          </select>
+        </label>
+        <br /><br />
+        <button onClick={handleLogin}>Login with Google</button>
+      </div>
   );
-}
+};
+
+export default SecureDownloadLogin;

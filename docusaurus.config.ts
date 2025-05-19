@@ -1,17 +1,16 @@
-import {Config} from '@docusaurus/types';
+import { Config } from '@docusaurus/types';
 
 const config: Config = {
   title: 'ATS CodeCheck',
   tagline: 'Secure Code Validation via Embedded Shared Libraries',
-  url: 'https://atscodecheck.dev',
-  baseUrl: '/',
-  onBrokenLinks: 'warn',
+  url: 'https://atscodecheck.dev', // ✅ Custom domain
+  baseUrl: '/', // ✅ Root for custom domain
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
-  organizationName: 'BrainBreaking',
-  projectName: 'ats-codecheck-site',
-
+  organizationName: 'BrainBreaking', // GitHub org/user
+  projectName: 'ats-codecheck-site', // GitHub repo
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
@@ -25,7 +24,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          routeBasePath: '/',
+          routeBasePath: '/', // ✅ Serve docs from root
           sidebarPath: require.resolve('./sidebars.ts'),
         },
         blog: false,
@@ -65,7 +64,7 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: 'intro',
+              to: '/',
             },
           ],
         },
@@ -88,7 +87,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} BrainBreaking. Built with Docusaurus.`,
+      copyright: `© ${new Date().getFullYear()} BrainBreaking. Built with Docusaurus.`,
     },
   },
 };

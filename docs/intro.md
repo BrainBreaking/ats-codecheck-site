@@ -21,7 +21,9 @@ ATS CodeCheck is a cross-platform native shared library (macOS `.dylib`, Windows
 
 ---
 
-## 🔐 Secure Downloads
+## 📦 Version
+
+Current version: `v1.0.0`
 
 <SecureDownloadLogin />
 
@@ -31,12 +33,6 @@ ATS CodeCheck is a cross-platform native shared library (macOS `.dylib`, Windows
 
 - [Integration Example](./example)
 - [API Reference](./api)
-
----
-
-## 📦 Version
-
-Current version: `v1.0.0`
 
 ---
 
