@@ -29,8 +29,8 @@ ATS CodeCheck is a cross-platform native shared library (macOS `.dylib`, Windows
 
 ## 📚 Documentation
 
-- [Integration Example](./docs/example)
-- [API Reference](./docs/api)
+- [Integration Example](./example)
+- [API Reference](./api)
 
 ---
 
