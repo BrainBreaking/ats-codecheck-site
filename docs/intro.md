@@ -25,6 +25,9 @@ ATS CodeCheck is a cross-platform native shared library (macOS `.dylib`, Windows
 
 Current version: `v1.0.0`
 
+To securely download the platform-specific shared library and header file, please authenticate with your Google account below. You will then be redirected to the appropriate file hosted on Google Cloud with a time-limited signed URL.
+
+
 <SecureDownloadLogin />
 
 ---
