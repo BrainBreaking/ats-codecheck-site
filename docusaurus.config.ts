@@ -19,6 +19,10 @@ const config: Config = {
     locales: ['en'],
   },
 
+  plugins: [
+    require.resolve('./.docusaurus/webpack.config.js'),
+  ],
+
   presets: [
     [
       'classic',
@@ -48,6 +52,11 @@ const config: Config = {
           docId: 'intro',
           position: 'left',
           label: 'Documentation',
+        },
+        {
+          label: 'Admin',
+          to: '/admin',
+          position: 'right',
         },
         {
           href: 'https://github.com/BrainBreaking/ats-codecheck-lib',
