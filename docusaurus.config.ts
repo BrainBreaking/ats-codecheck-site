@@ -1,4 +1,5 @@
 import { Config } from '@docusaurus/types';
+import path from "path";
 
 const config: Config = {
   title: 'ATS CodeCheck',
@@ -20,7 +21,20 @@ const config: Config = {
   },
 
   plugins: [
-    require.resolve('./.docusaurus/webpack.config.js'),
+    function myPlugin() {
+      return {
+        name: 'custom-alias-plugin',
+        configureWebpack(config, isServer, utils) {
+          return {
+            resolve: {
+              alias: {
+                '@': path.resolve(__dirname, '../src'),
+              },
+            },
+          };
+        }
+      };
+    },
   ],
 
   presets: [
