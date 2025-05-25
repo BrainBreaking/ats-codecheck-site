@@ -1,118 +1,122 @@
-import { Config } from '@docusaurus/types';
+import {Config} from '@docusaurus/types';
 import path from "path";
 
 const config: Config = {
-  title: 'ATS CodeCheck',
-  tagline: 'Secure Code Validation via Embedded Shared Libraries',
-  url: 'https://atscodecheck.dev', // ✅ Custom domain
-  baseUrl: '/', // ✅ Root for custom domain
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+    title: 'ATS CodeCheck',
+    tagline: 'Secure Code Validation via Embedded Shared Libraries',
+    url: 'https://atscodecheck.dev', // ✅ Custom domain
+    baseUrl: '/', // ✅ Root for custom domain
+    onBrokenLinks: 'throw',
+    onBrokenMarkdownLinks: 'warn',
+    favicon: 'img/favicon.ico',
 
-  organizationName: 'BrainBreaking', // GitHub org/user
-  projectName: 'ats-codecheck-site', // GitHub repo
-  deploymentBranch: 'gh-pages',
-  trailingSlash: false,
+    organizationName: 'BrainBreaking', // GitHub org/user
+    projectName: 'ats-codecheck-site', // GitHub repo
+    deploymentBranch: 'gh-pages',
+    trailingSlash: false,
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
-
-  plugins: [
-    function myPlugin() {
-      return {
-        name: 'custom-alias-plugin',
-        configureWebpack(config, isServer, utils) {
-          return {
-            resolve: {
-              alias: {
-                '@': path.resolve(__dirname, '../src'),
-              },
-            },
-          };
-        }
-      };
+    i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'es'], // Add your desired languages
+        localeConfigs: {
+            en: {label: 'English'},
+            es: {label: 'Español'},
+        },
     },
-  ],
 
-  presets: [
-    [
-      'classic',
-      {
-        docs: {
-          routeBasePath: '/', // ✅ Serve docs from root
-          sidebarPath: require.resolve('./sidebars.ts'),
+    plugins: [
+        function myPlugin() {
+            return {
+                name: 'custom-alias-plugin',
+                configureWebpack(config, isServer, utils) {
+                    return {
+                        resolve: {
+                            alias: {
+                                '@': path.resolve(__dirname, '../src'),
+                            },
+                        },
+                    };
+                }
+            };
         },
-        blog: false,
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      },
     ],
-  ],
 
-  themeConfig: {
-    navbar: {
-      title: 'ATS CodeCheck',
-      logo: {
-        alt: 'ATS Logo',
-        src: 'img/logo.svg',
-      },
-      items: [
-        {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
-          label: 'Documentation',
+    presets: [
+        [
+            'classic',
+            {
+                docs: {
+                    routeBasePath: '/', // ✅ Serve docs from root
+                    sidebarPath: require.resolve('./sidebars.ts'),
+                },
+                blog: false,
+                theme: {
+                    customCss: require.resolve('./src/css/custom.css'),
+                },
+            },
+        ],
+    ],
+
+    themeConfig: {
+        navbar: {
+            title: 'ATS CodeCheck',
+            logo: {
+                alt: 'ATS Logo',
+                src: 'img/logo.svg',
+            },
+            items: [
+                {
+                    type: 'doc',
+                    docId: 'intro',
+                    position: 'left',
+                    label: 'Documentation',
+                },
+                {
+                    label: 'Admin',
+                    to: '/admin',
+                    position: 'right',
+                },
+                {
+                    href: 'https://github.com/BrainBreaking/ats-codecheck-lib',
+                    label: 'GitHub',
+                    position: 'right',
+                },
+            ],
         },
-        {
-          label: 'Admin',
-          to: '/admin',
-          position: 'right',
+        footer: {
+            style: 'dark',
+            links: [
+                {
+                    title: 'Docs',
+                    items: [
+                        {
+                            label: 'Introduction',
+                            to: '/',
+                        },
+                    ],
+                },
+                {
+                    title: 'Community',
+                    items: [
+                        {
+                            label: 'GitHub Issues',
+                            href: 'https://github.com/BrainBreaking/ats-codecheck-lib/issues',
+                        },
+                    ],
+                },
+                {
+                    title: 'More',
+                    items: [
+                        {
+                            label: 'Releases',
+                            href: 'https://github.com/BrainBreaking/ats-codecheck-lib/releases',
+                        },
+                    ],
+                },
+            ],
+            copyright: `© ${new Date().getFullYear()} BrainBreaking. Built with Docusaurus.`,
         },
-        {
-          href: 'https://github.com/BrainBreaking/ats-codecheck-lib',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Introduction',
-              to: '/',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub Issues',
-              href: 'https://github.com/BrainBreaking/ats-codecheck-lib/issues',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Releases',
-              href: 'https://github.com/BrainBreaking/ats-codecheck-lib/releases',
-            },
-          ],
-        },
-      ],
-      copyright: `© ${new Date().getFullYear()} BrainBreaking. Built with Docusaurus.`,
-    },
-  },
 };
 
 export default config;
