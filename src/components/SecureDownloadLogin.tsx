@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 // 🔐 Initialize Firebase
 const firebaseConfig = {
@@ -14,6 +15,9 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
 const SecureDownloadLogin: React.FC = () => {
   const [platform, setPlatform] = useState('macOS');
   const [status, setStatus] = useState<'idle' | 'logging-in' | 'downloading' | 'error'>('idle');
@@ -24,10 +28,25 @@ const SecureDownloadLogin: React.FC = () => {
     setErrorMsg(null);
 
     const provider = new firebase.auth.GoogleAuthProvider();
-    try {
-      const result = await firebase.auth().signInWithPopup(provider);
-      const token = await result.user?.getIdToken();
 
+    try {
+      const result = await auth.signInWithPopup(provider);
+      const user = result.user;
+
+      if (!user) throw new Error('No user returned from login');
+
+      // ✅ Firestore lookup
+      const doc = await firestore.collection('claims').doc(user.email!).get();
+      const data = doc.data();
+
+      if (!data?.canDownload) {
+        console.warn(`🚫 Firestore claim missing for: ${user.email}`);
+        setStatus('error');
+        setErrorMsg('⚠️ You do not have permission to download.');
+        return;
+      }
+
+      const token = await user.getIdToken();
       const version = 'latest';
       const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
 
@@ -36,7 +55,7 @@ const SecureDownloadLogin: React.FC = () => {
     } catch (error: any) {
       console.error('Authentication failed:', error);
       setStatus('error');
-      setErrorMsg('❌ Login failed. Please try again.');
+      setErrorMsg('❌ Login failed or unauthorized.');
     }
   };
 
