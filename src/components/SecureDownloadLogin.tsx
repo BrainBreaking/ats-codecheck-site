@@ -53,12 +53,20 @@ const SecureDownloadLogin: React.FC = () => {
         return;
       }
 
+      await firestore.collection('users').doc(user.email!).set(
+          {
+            lastAccess: firebase.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true }
+      );
+
       const token = await user.getIdToken();
       const version = 'latest';
       const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
 
       setStatus('downloading');
       setDownloadUrl(downloadUrl);
+
     } catch (error: any) {
       console.error('Authentication failed:', error);
       setStatus('error');

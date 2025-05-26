@@ -137,7 +137,7 @@ const LicenseGenerator = () => {
                         >
                             {lic.mac} @ {lic.host} ({new Date(lic.createdAt).toLocaleString()})
                         </a>
-                        <button onClick={() => deleteLicense(lic.id)}>❌ Delete</button>
+                        <button onClick={() => deleteLicense(lic.id)}>❌ Inactivate</button>
                     </li>
                 ))}
             </ul>
