@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Card, CardContent } from '../components/ui/card';
+import {Button} from '../components/ui/button';
+import {Input} from '../components/ui/input';
+import {Card, CardContent} from '../components/ui/card';
 
 // Firebase config
 const firebaseConfig = {
@@ -26,6 +26,7 @@ const AdminDashboard = () => {
     const [status, setStatus] = useState('');
     const [users, setUsers] = useState([]);
     const [accessDenied, setAccessDenied] = useState(false);
+    const [expireAt, setExpireAt] = useState('');
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((u) => {
@@ -63,7 +64,7 @@ const AdminDashboard = () => {
 
     const grantDownload = async () => {
         try {
-            await firestore.collection('claims').doc(email).set({ canDownload: true });
+            await firestore.collection('claims').doc(email).set({canDownload: true});
             setStatus(`✅ Granted download permission to ${email}`);
         } catch (err) {
             setStatus(`❌ Failed: ${err.message}`);
@@ -72,8 +73,11 @@ const AdminDashboard = () => {
 
     const grantLicense = async () => {
         try {
-            await firestore.collection('claims').doc(email).set({ canGenerateLicense: true }, { merge: true });
-            setStatus(`✅ Granted license generation permission to ${email}`);
+            await firestore.collection('claims').doc(email).set(
+                {canGenerateLicense: true, expireAt},
+                {merge: true}
+            );
+            setStatus(`✅ Granted license generation permission to ${email} with expiration ${expireAt}`);
         } catch (err) {
             setStatus(`❌ Failed: ${err.message}`);
         }
@@ -81,7 +85,7 @@ const AdminDashboard = () => {
 
     const fetchClaims = async () => {
         const snapshot = await firestore.collection('claims').get();
-        const data = snapshot.docs.map(doc => ({ email: doc.id, ...doc.data() }));
+        const data = snapshot.docs.map(doc => ({email: doc.id, ...doc.data()}));
         setUsers(data);
     };
 
@@ -99,14 +103,27 @@ const AdminDashboard = () => {
                         <Button onClick={logout}>Logout</Button>
 
                         <div className="my-4">
-                            <Input
-                                type="email"
-                                placeholder="User email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <Button className="mt-2" onClick={grantDownload}>Grant Access</Button>
-                            <Button className="mt-2" onClick={grantLicense}>Grant License Generation</Button>
+                            <div>
+                                <Input
+                                    type="email"
+                                    placeholder="User email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <Button className="mt-2" onClick={grantDownload}>Grant Access</Button>
+                            </div>
+                            <div>
+                                <Input
+                                    type="datetime-local"
+                                    className="mt-2"
+                                    value={expireAt}
+                                    onChange={(e) => setExpireAt(e.target.value)}
+                                />
+                                <Button className="mt-2" onClick={grantLicense}>Grant License Generation</Button>
+                            </div>
+
                         </div>
 
                         <Button onClick={fetchClaims}>View All Claims</Button>

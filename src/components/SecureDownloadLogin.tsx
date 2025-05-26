@@ -24,6 +24,7 @@ const SecureDownloadLogin: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'logging-in' | 'downloading' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [canGenerateLicense, setCanGenerateLicense] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
   const handleLogin = async () => {
     setStatus('logging-in');
@@ -57,7 +58,7 @@ const SecureDownloadLogin: React.FC = () => {
       const downloadUrl = `https://securedownload-czucgf4kiq-uc.a.run.app/?version=${version}&platform=${platform}&token=${token}`;
 
       setStatus('downloading');
-      window.location.href = downloadUrl;
+      setDownloadUrl(downloadUrl);
     } catch (error: any) {
       console.error('Authentication failed:', error);
       setStatus('error');
@@ -88,8 +89,14 @@ const SecureDownloadLogin: React.FC = () => {
           {status === 'logging-in' ? 'Signing in...' : 'Login with Google'}
         </button>
 
-        {status === 'downloading' && <p>⬇️ Download starting...</p>}
+        {status === 'downloading' && <p>⬇️ Download ready...</p>}
         {status === 'error' && <p style={{ color: 'red' }}>{errorMsg}</p>}
+
+        {downloadUrl && (
+          <a href={downloadUrl} download>
+            <button>⬇️ Click here to download</button>
+          </a>
+        )}
 
         {canGenerateLicense && (
           <div style={{ marginTop: '2rem' }}>
