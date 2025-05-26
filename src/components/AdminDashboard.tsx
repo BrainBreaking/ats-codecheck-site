@@ -70,6 +70,15 @@ const AdminDashboard = () => {
         }
     };
 
+    const grantLicense = async () => {
+        try {
+            await firestore.collection('claims').doc(email).set({ canGenerateLicense: true }, { merge: true });
+            setStatus(`✅ Granted license generation permission to ${email}`);
+        } catch (err) {
+            setStatus(`❌ Failed: ${err.message}`);
+        }
+    };
+
     const fetchClaims = async () => {
         const snapshot = await firestore.collection('claims').get();
         const data = snapshot.docs.map(doc => ({ email: doc.id, ...doc.data() }));
@@ -97,6 +106,7 @@ const AdminDashboard = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <Button className="mt-2" onClick={grantDownload}>Grant Access</Button>
+                            <Button className="mt-2" onClick={grantLicense}>Grant License Generation</Button>
                         </div>
 
                         <Button onClick={fetchClaims}>View All Claims</Button>

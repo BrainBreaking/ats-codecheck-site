@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import LicenseGenerator from './LicenseGenerator';
 
 // 🔐 Initialize Firebase
 const firebaseConfig = {
@@ -22,6 +23,7 @@ const SecureDownloadLogin: React.FC = () => {
   const [platform, setPlatform] = useState('macOS');
   const [status, setStatus] = useState<'idle' | 'logging-in' | 'downloading' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [canGenerateLicense, setCanGenerateLicense] = useState(false);
 
   const handleLogin = async () => {
     setStatus('logging-in');
@@ -38,6 +40,10 @@ const SecureDownloadLogin: React.FC = () => {
       // ✅ Firestore lookup
       const doc = await firestore.collection('claims').doc(user.email!).get();
       const data = doc.data();
+
+      if (data?.canGenerateLicense) {
+        setCanGenerateLicense(true);
+      }
 
       if (!data?.canDownload) {
         console.warn(`🚫 Firestore claim missing for: ${user.email}`);
@@ -84,6 +90,12 @@ const SecureDownloadLogin: React.FC = () => {
 
         {status === 'downloading' && <p>⬇️ Download starting...</p>}
         {status === 'error' && <p style={{ color: 'red' }}>{errorMsg}</p>}
+
+        {canGenerateLicense && (
+          <div style={{ marginTop: '2rem' }}>
+            <LicenseGenerator />
+          </div>
+        )}
       </div>
   );
 };
