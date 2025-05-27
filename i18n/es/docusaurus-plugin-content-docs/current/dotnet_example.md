@@ -72,7 +72,6 @@ class Program
 
 > ⚠️ Nota:
 > - Asegúrate de que `atscodecheck.dll` y `libatscodecheck.h` estén ubicados en el directorio de salida de tu compilación.
-> - Si usas aplicaciones .NET x86, asegúrate de compilar la librería Go para `GOARCH=386`.
 
 ---
 
