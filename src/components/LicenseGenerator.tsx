@@ -81,8 +81,9 @@ const LicenseGenerator = () => {
             }
 
             if (data.status === 'success') {
-                // Save license info to Firestore
-                await firestore.collection('licenses').add({
+                // Save license info to Firestore using hardwareId as document ID
+                const hardwareId = mac + '#' + host;
+                await firestore.collection('licenses').doc(hardwareId).set({
                     user: firebase.auth().currentUser?.email,
                     mac,
                     host,
