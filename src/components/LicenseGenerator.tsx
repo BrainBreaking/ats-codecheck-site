@@ -35,7 +35,8 @@ const LicenseGenerator = () => {
                 const claims = doc.exists ? doc.data() : {};
                 setCanGenerate(claims.canGenerateLicense === true);
                 if (claims.expireAt) {
-                    setExpireAt(claims.expireAt);
+                    const expiresAtIso = new Date(claims.expireAt).toISOString();
+                    setExpireAt(expiresAtIso);
                 }
                 if (user && claims.canGenerateLicense === true) {
                     const querySnapshot = await firestore.collection('licenses')
@@ -59,7 +60,7 @@ const LicenseGenerator = () => {
         setStatus('Generating license...');
         try {
             const token = await firebase.auth().currentUser.getIdToken();
-            
+
             const response = await fetch("https://us-central1-ats-nonprod.cloudfunctions.net/generateLicense", {
                 method: 'POST',
                 headers: {
@@ -69,7 +70,6 @@ const LicenseGenerator = () => {
                 body: JSON.stringify({
                     mac,
                     host,
-                    expireAt,
                     user: firebase.auth().currentUser?.email,
                 }),
             });
