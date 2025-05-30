@@ -59,8 +59,8 @@ const LicenseGenerator = () => {
         setStatus('Generating license...');
         try {
             const token = await firebase.auth().currentUser.getIdToken();
-            console.log("Token:",token)
-            const response = await fetch('https://us-central1-ats-nonprod.cloudfunctions.net/generateLicense', {
+            
+            const response = await fetch("https://us-central1-ats-nonprod.cloudfunctions.net/generateLicense", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const LicenseGenerator = () => {
 
             if (data.status === 'success') {
                 // Save license info to Firestore using hardwareId as document ID
-                const hardwareId = mac + '#' + host;
+                const hardwareId =  host + '#' + mac;
                 await firestore.collection('licenses').doc(hardwareId).set({
                     user: firebase.auth().currentUser?.email,
                     mac,
@@ -123,7 +123,7 @@ const LicenseGenerator = () => {
             {status && <p>{status}</p>}
             {licenseId && (
                 <a href={`data:text/plain;charset=utf-8,${encodeURIComponent(licenseId)}`}
-                   download={`license-${mac}-${host}.lic`}>
+                   download={`license-${host}-${mac}.lic`}>
                     ⬇️ Download License
                 </a>
             )}
@@ -134,9 +134,9 @@ const LicenseGenerator = () => {
                     <li key={lic.id}>
                         <a
                             href={`data:text/plain;charset=utf-8,${encodeURIComponent(lic.license)}`}
-                            download={`license-${lic.mac}-${lic.host}.lic`}
+                            download={`license-${lic.host}-${lic.mac}.lic`}
                         >
-                            {lic.mac} @ {lic.host} ({new Date(lic.createdAt).toLocaleString()})
+                            {lic.host} @ {lic.mac} ({new Date(lic.createdAt).toLocaleString()})
                         </a>
                         <button onClick={() => deleteLicense(lic.id)}>❌ Inactivate</button>
                     </li>
